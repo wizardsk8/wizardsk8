@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard | Little Hoopers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard-header {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.dashboard-header nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dashboard-header nav ul li {
+    margin: 0 10px;
+}
+
+.dashboard-header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #f0390f;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-header nav ul li a:hover {
+    background-color: #f0390f;
+    color: #fff;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.dashboard-main section {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 45%;
+}
+
+.dashboard-main section h2 {
+    font-size: 20px;
+    color: #f0390f;
+    margin-bottom: 10px;
+}
+
+.dashboard-main section p,
+.dashboard-main section ul {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+}
+
+.dashboard-main section ul {
+    padding-left: 20px;
+}
+
+.dashboard-main section ul li {
+    margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-main section {
+        width: 80%;
+    }
+}
+</style>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1>Welcome, <%= user.firstname %> <%= user.lastname %> </h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Profile Settings</a></li>
+                    <li><a href="#">Billing and Payments</a></li>
+                    <li><a href="contact.html">Contact Support</a></li>
+                    <li><a href="#" id="logoutLink">Log Out</a></li>
+                </ul>
+                 <script>
+        document.getElementById('logoutLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+            fetch('/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Clear any local storage or session storage if used
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = '/';
+                } else {
+                    alert('Logout failed');
+                }
+            });
+        });
+    </script>
+            </nav>
+        </header>
+        <main class="dashboard-main">
+            <section class="upcoming-events">
+                <h2>Upcoming Events</h2>
+                <ul>
+                    <li>Summer Camp - July 20</li>
+                    <li>Holiday Clinic - December 15</li>
+                    <li>Basketball Tournament - August 10</li>
+                </ul>
+            </section>
+            <section class="child-progress">
+                <h2>Child's Progress</h2>
+                <p>Recent Achievements: </p>
+                <p>Skills to Improve: </p>
+            </section>
+            <section class="registration-status">
+                <h2>Registration Status</h2>
+                <p>Active Programs: </p>
+                <p>Pending Registrations: </p>
+                <p>Waitlisted: </p>
+            </section>
+            <section class="announcements">
+                <h2>Announcements</h2>
+                <p>New training programs available for Under 12 category!</p>
+                <p>COVID-19 safety protocols updated.</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

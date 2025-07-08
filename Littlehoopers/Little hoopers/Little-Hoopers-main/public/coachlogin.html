@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, Coach</h1>
+    <div id="coach-info">
+        <img src="default-coach.png" alt="Coach Icon">
+        <p id="coach-name"></p>
+        <p id="coach-email"></p>
+    </div>
+    <h2>Training Sessions</h2>
+    <table id="training-sessions-table">
+        <thead>
+            <tr>
+                <th>Session Name</th>
+                <th>Level</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically inserted here -->
+  <!--      </tbody>
+    </table>
+
+    <script>
+        async function loadCoachInfo() {
+            try {
+                const response = await fetch('/api/coach/info');
+                const coach = await response.json();
+                document.getElementById('coach-name').innerText = coach.name;
+                document.getElementById('coach-email').innerText = coach.email;
+            } catch (error) {
+                console.error('Error loading coach info:', error);
+            }
+        }
+
+        async function loadTrainingSessions() {
+            try {
+                const response = await fetch('/api/coach/training-sessions');
+                const sessions = await response.json();
+                const tableBody = document.getElementById('training-sessions-table').querySelector('tbody');
+                
+                sessions.forEach(session => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${session.sessionname}</td>
+                        <td>${session.level}</td>
+                        <td>${session.date}</td>
+                        <td>${session.time}</td>
+                        <td>${session.duration}</td>
+                        <td>${session.location}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading training sessions:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCoachInfo();
+            loadTrainingSessions();
+        });
+    </script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .login-container, .dashboard-container {
+            display: none;
+        }
+        .icon {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="section">
+            <div class="icon"></div>
+            <p id="coachName"></p>
+            <p id="coachEmail"></p>
+        </div>
+
+        <div class="section" id="schedule">
+            <h2>Schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Session Name</th>
+                        <th>Level</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginContainer = document.querySelector('.login-container');
+        const dashboardContainer = document.querySelector('.dashboard-container');
+        const loginForm = document.getElementById('loginForm');
+        const coachName = document.getElementById('coachName');
+        const coachEmail = document.getElementById('coachEmail');
+        const scheduleTableBody = document.getElementById('scheduleTableBody');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            const response = await fetch('/login', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                coachName.textContent = `${data.firstname} ${data.lastname}`;
+                coachEmail.textContent = data.email;
+                loginContainer.style.display = 'none';
+                dashboardContainer.style.display = 'block';
+                loadSchedule();
+            } else {
+                alert('Login failed!');
+            }
+        });
+
+        async function loadSchedule() {
+            const response = await fetch('/training-sessions');
+            if (response.ok) {
+                const sessions = await response.json();
+                scheduleTableBody.innerHTML = '';
+                sessions.forEach(session => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${session.sessionname}</td>
+                        <td>${session.level}</td>
+                        <td>${session.date}</td>
+                        <td>${session.time}</td>
+                        <td>${session.duration}</td>
+                        <td>${session.location}</td>
+                    `;
+                    scheduleTableBody.appendChild(row);
+                });
+            } else {
+                alert('Failed to load schedule!');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
+

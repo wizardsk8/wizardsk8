@@ -1,0 +1,32 @@
+body {
+  background-color: #e0f7fa;
+  color: #004d40;
+}
+
+h1 {
+  color: #00796b;
+}
+
+nav a {
+  color: #004d40;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  padding: 5px;
+  width: 200px;
+}
